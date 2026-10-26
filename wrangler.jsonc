@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "anular-remitos-camiones",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-26",
+  "workers_dev": true,
+
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "anular-remitos-db",
+      "database_id": "REEMPLAZAR_POR_ID_D1"
+    }
+  ],
+
+  "triggers": {
+    "crons": ["*/15 * * * *"]
+  }
+}
