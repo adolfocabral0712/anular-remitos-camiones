@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solicitud de anulación de remito</title>
+
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, sans-serif;
+      background: #f3f5f7;
+      color: #22313d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 14px;
+    }
+
+    main {
+      width: min(100%, 540px);
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 5px 22px #17212b16;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 23px;
+    }
+
+    .intro {
+      margin: 0 0 22px;
+      color: #62717d;
+      line-height: 1.45;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 6px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 12px;
+      border: 1px solid #bdc7cf;
+      border-radius: 8px;
+      font-size: 17px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #d88727;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f4f6f7;
+      border-radius: 8px;
+      color: #56636d;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    #resultado {
+      margin-top: 16px;
+    }
+
+    .estado {
+      padding: 12px;
+      border-radius: 8px;
+      background: #eef3f6;
+      line-height: 1.45;
+    }
+
+    .registro {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid #d8dee3;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .registro p {
+      margin: 5px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .opcion {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 12px;
+    }
+
+    .opcion input {
+      width: auto;
+      margin-top: 4px;
+    }
+
+    .error {
+      color: #a32222;
+    }
+
+    .oculto {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+  <section class="panel">
+    <h1>Solicitud de anulación</h1>
+    <p class="intro">
+      Ingresá la matrícula y la cédula para buscar el remito vigente.
+      Antes de anularlo podrás revisar los datos y confirmar.
+    </p>
+
+    <form id="formulario">
+      <label for="matricula">Matrícula del camión o acoplado</label>
+      <input
+        id="matricula"
+        name="matricula"
+        autocomplete="off"
+        maxlength="20"
+        required
+      >
+
+      <label for="ci">Cédula del chofer</label>
+      <input
+        id="ci"
+        name="ci"
+        inputmode="numeric"
+        autocomplete="off"
+        maxlength="20"
+        required
+      >
+
+      <div class="oculto" aria-hidden="true">
+        <label for="website">Dejar vacío</label>
+        <input id="website" name="website" tabindex="-1">
+      </div>
+
+      <button id="buscar" type="submit">Buscar remito</button>
+    </form>
+
+    <div class="notice">
+      La matrícula y la cédula se usan para validar la solicitud.
+      La anulación se realiza únicamente después de tu confirmación.
+    </div>
+
+    <div id="resultado" aria-live="polite"></div>
+  </section>
+</main>
+
+<script>
+  const formulario = document.getElementById("formulario");
+  const botonBuscar = document.getElementById("buscar");
+  const resultado = document.getElementById("resultado");
+
+  let solicitudActual = null;
+  let temporizador = null;
+
+  function mostrarEstado(texto, error = false) {
+    resultado.replaceChildren();
+
+    const caja = document.createElement("div");
+    caja.className = error ? "estado error" : "estado";
+    caja.textContent = texto;
+
+    resultado.appendChild(caja);
+  }
+
+  function agregarDato(contenedor, etiqueta, valor) {
+    const parrafo = document.createElement("p");
+    const fuerte = document.createElement("strong");
+
+    fuerte.textContent = etiqueta + ": ";
+    parrafo.appendChild(fuerte);
+    parrafo.appendChild(document.createTextNode(valor || "—"));
+    contenedor.appendChild(parrafo);
+  }
+
+  function mostrarCoincidencias(datos) {
+    resultado.replaceChildren();
+
+    const estado = document.createElement("div");
+    estado.className = "estado";
+    estado.textContent =
+      datos.candidates.length === 1
+        ? "Se encontró el remito vigente. Revisá los datos antes de confirmar."
+        : "Se encontraron varios registros. Elegí cuál querés anular.";
+
+    resultado.appendChild(estado);
+
+    const grupo = document.createElement("div");
+
+    datos.candidates.forEach((registro, indice) => {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "registro";
+
+      if (datos.candidates.length > 1) {
+        const opcion = document.createElement("label");
+        opcion.className = "opcion";
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "registroElegido";
+        radio.value = registro.id;
+        radio.required = true;
+        radio.checked = indice === 0;
+
+        const texto = document.createElement("span");
+        texto.textContent = "Elegir este registro";
+
+        opcion.append(radio, texto);
+        tarjeta.appendChild(opcion);
+      }
+
+      agregarDato(tarjeta, "ID", registro.id);
+      agregarDato(tarjeta, "Remito", registro.remito);
+      agregarDato(tarjeta, "Camión", registro.camion);
+      agregarDato(tarjeta, "Acoplado", registro.acoplado);
+      agregarDato(tarjeta, "Horario", registro.horario);
+      agregarDato(tarjeta, "Origen", registro.origen);
+      agregarDato(tarjeta, "Producto", registro.producto);
+
+      grupo.appendChild(tarjeta);
+    });
+
+    resultado.appendChild(grupo);
+
+    const confirmar = document.createElement("button");
+    confirmar.type = "button";
+    confirmar.textContent = "Confirmar solicitud de anulación";
+    confirmar.addEventListener("click", confirmarAnulacion);
+
+    resultado.appendChild(confirmar);
+  }
+
+  async function consultarEstado() {
+    if (!solicitudActual) return;
+
+    try {
+      const respuesta = await fetch(
+        "/api/solicitud/estado?id=" +
+          encodeURIComponent(solicitudActual),
+        { cache: "no-store" }
+      );
+
+      const datos = await respuesta.json();
+
+      if (!respuesta.ok || !datos.ok) {
+        mostrarEstado(
+          datos.error || "No se pudo consultar el estado.",
+          true
+        );
+        detenerConsulta();
+        return;
+      }
+
+      if (
+        datos.status === "pendiente_busqueda" ||
+        datos.status === "procesando_busqueda"
+      ) {
+        mostrarEstado("Buscando el remito...");
+        return;
+      }
+
+      if (datos.status === "encontrado" || datos.status === "varios") {
+        detenerConsulta();
+        mostrarCoincidencias(datos);
+        return;
+      }
+
+      if (
+        datos.status === "pendiente_anulacion" ||
+        datos.status === "procesando_anulacion"
+      ) {
+        mostrarEstado("Procesando la anulación...");
+        return;
+      }
+
+      if (datos.status === "anulado") {
+        mostrarEstado(
+          "El remito fue anulado correctamente. " + datos.message
+        );
+        detenerConsulta();
+        return;
+      }
+
+      if (datos.status === "sin_coincidencia") {
+        mostrarEstado(
+          datos.message || "No se encontró un remito vigente.",
+          true
+        );
+        detenerConsulta();
+        return;
+      }
+
+      if (datos.status === "registro_ya_cambio") {
+        mostrarEstado(
+          datos.message ||
+            "El registro cambió y ya no figura vigente.",
+          true
+        );
+        detenerConsulta();
+        return;
+      }
+
+      if (
+        datos.status === "error_busqueda" ||
+        datos.status === "error_anulacion" ||
+        datos.status === "vencida"
+      ) {
+        mostrarEstado(
+          datos.message || "No se pudo completar la solicitud.",
+          true
+        );
+        detenerConsulta();
+      }
+
+    } catch {
+      mostrarEstado("No se pudo conectar. Probá nuevamente.", true);
+      detenerConsulta();
+    }
+  }
+
+  function iniciarConsulta() {
+    detenerConsulta();
+    consultarEstado();
+    temporizador = setInterval(consultarEstado, 3000);
+  }
+
+  function detenerConsulta() {
+    if (temporizador) {
+      clearInterval(temporizador);
+      temporizador = null;
+    }
+  }
+
+  async function confirmarAnulacion() {
+    const seleccionado =
+      document.querySelector('input[name="registroElegido"]:checked');
+
+    const unicoId =
+      document.querySelector(".registro p strong")?.nextSibling?.textContent;
+
+    const selectedId = seleccionado
+      ? seleccionado.value
+      : (solicitudActual && document.querySelector(".registro")
+          ? document.querySelector(".registro").querySelector("p")
+              ?.textContent.replace("ID:", "").trim()
+          : unicoId);
+
+    if (!selectedId) {
+      mostrarEstado("Elegí un registro para continuar.", true);
+      return;
+    }
+
+    if (!window.confirm(
+      "¿Confirmás que querés solicitar la anulación de este remito?"
+    )) {
+      return;
+    }
+
+    mostrarEstado("Enviando la solicitud...");
+
+    try {
+      const respuesta = await fetch("/api/solicitud/confirmar", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          id: solicitudActual,
+          selected_id: selectedId
+        })
+      });
+
+      const datos = await respuesta.json();
+
+      if (!respuesta.ok || !datos.ok) {
+        mostrarEstado(
+          datos.error || "No se pudo confirmar.",
+          true
+        );
+        return;
+      }
+
+      mostrarEstado("Solicitud confirmada. Esperando el resultado...");
+      iniciarConsulta();
+
+    } catch {
+      mostrarEstado("No se pudo conectar. Probá nuevamente.", true);
+    }
+  }
+
+  formulario.addEventListener("submit", async evento => {
+    evento.preventDefault();
+    detenerConsulta();
+
+    botonBuscar.disabled = true;
+    mostrarEstado("Enviando la búsqueda...");
+
+    try {
+      const respuesta = await fetch("/api/solicitud", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          matricula: document.getElementById("matricula").value,
+          ci: document.getElementById("ci").value,
+          website: document.getElementById("website").value
+        })
+      });
+
+      const datos = await respuesta.json();
+
+      if (!respuesta.ok || !datos.ok) {
+        mostrarEstado(
+          datos.error || "No se pudo iniciar la búsqueda.",
+          true
+        );
+        return;
+      }
+
+      solicitudActual = datos.id;
+      mostrarEstado("Solicitud recibida. Buscando el remito...");
+      iniciarConsulta();
+
+    } catch {
+      mostrarEstado("No se pudo conectar. Probá nuevamente.", true);
+    } finally {
+      botonBuscar.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
