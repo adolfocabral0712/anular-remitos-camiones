@@ -485,7 +485,7 @@
     <div class="steps" aria-label="Pasos de la solicitud">
       <div class="step active">
         <span class="step-number">1</span>
-        <span>Buscar remito</span>
+        <span>Buscar turno</span>
       </div>
       <span class="step-line" aria-hidden="true"></span>
       <div class="step">
@@ -531,7 +531,7 @@
             <circle cx="10.8" cy="10.8" r="6.7" stroke="currentColor" stroke-width="2.2" />
             <path d="m16 16 4.4 4.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
           </svg>
-          <span>Buscar remito</span>
+          <span>Buscar turno</span>
         </button>
       </div>
     </form>
@@ -587,7 +587,7 @@
     estado.className = "estado success";
     estado.setAttribute("role", "status");
     estado.textContent = datos.candidates.length === 1
-      ? "Remito vigente encontrado. Revisá los datos antes de confirmar."
+      ? "Turno vigente encontrado. Revisá los datos antes de confirmar."
       : "Se encontraron varios registros. Elegí cuál querés anular.";
     resultado.appendChild(estado);
 
