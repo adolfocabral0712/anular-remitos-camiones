@@ -3,129 +3,438 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Solicitud de anulación de remito</title>
+  <meta name="theme-color" content="#f3f5f8">
+  <title>Solicitud de anulación para descarga en Planta FAS</title>
 
   <style>
     :root {
       color-scheme: light;
-      font-family: Arial, sans-serif;
-      background: #f3f5f7;
-      color: #22313d;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: #152d4a;
+      background: #f3f5f8;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      --navy: #173453;
+      --muted: #64748b;
+      --line: #d8e0e9;
+      --amber: #c9832e;
+      --amber-dark: #a9661f;
+      --red: #bd3438;
+      --red-dark: #9f252a;
+      --green: #18764a;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
+      min-width: 320px;
+      min-height: 100vh;
       margin: 0;
-      padding: 24px 14px;
+      padding: 42px 20px;
+      background:
+        radial-gradient(circle at 50% 0, #ffffff 0, #f5f7fa 44%, #edf1f5 100%);
     }
 
     main {
-      width: min(100%, 540px);
+      width: min(100%, 1040px);
       margin: 0 auto;
     }
 
     .panel {
-      background: white;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 5px 22px #17212b16;
+      padding: clamp(24px, 4vw, 46px);
+      border: 1px solid #e1e7ee;
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 18px 55px #18324b12, 0 2px 8px #18324b08;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 13px;
+      color: #65778b;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--amber);
+      content: "";
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: 23px;
+      max-width: 850px;
+      margin: 0;
+      color: #112b4a;
+      font-size: clamp(29px, 4.2vw, 42px);
+      font-weight: 750;
+      letter-spacing: -.035em;
+      line-height: 1.12;
     }
 
     .intro {
-      margin: 0 0 22px;
-      color: #62717d;
-      line-height: 1.45;
+      max-width: 760px;
+      margin: 13px 0 27px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
     }
 
-    label {
+    .steps {
+      display: flex;
+      align-items: center;
+      width: min(100%, 560px);
+      margin: 0 0 28px;
+      color: #748399;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .step-number {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 50%;
+      background: #e9eef4;
+      color: #52657c;
+      font-weight: 750;
+    }
+
+    .step.active { color: var(--navy); }
+    .step.active .step-number {
+      background: #f2dfc9;
+      color: #9e5c1e;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      min-width: 35px;
+      margin: 0 17px;
+      background: #d8e0e9;
+    }
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 16px;
+    }
+
+    .field label {
       display: block;
-      margin: 15px 0 6px;
+      margin: 0 0 8px;
+      color: #243b57;
+      font-size: 14px;
       font-weight: 700;
     }
 
-    input {
+    input:not([type="radio"]) {
+      display: block;
       width: 100%;
-      padding: 13px 12px;
-      border: 1px solid #bdc7cf;
-      border-radius: 8px;
-      font-size: 17px;
+      min-height: 52px;
+      padding: 13px 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      outline: none;
+      background: #fff;
+      color: #142d49;
+      font: inherit;
+      font-size: 16px;
+      transition: border-color .15s ease, box-shadow .15s ease;
     }
+
+    input:not([type="radio"]):focus {
+      border-color: #6689aa;
+      box-shadow: 0 0 0 3px #416b9020;
+    }
+
+    input::placeholder { color: #95a2b2; }
 
     button {
-      width: 100%;
-      margin-top: 18px;
       border: 0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #d88727;
-      color: white;
-      font-size: 16px;
+      border-radius: 10px;
+      font: inherit;
       font-weight: 700;
       cursor: pointer;
+      transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
+    }
+
+    button:hover:not(:disabled) { transform: translateY(-1px); }
+
+    button:focus-visible {
+      outline: 3px solid #4d83b566;
+      outline-offset: 3px;
     }
 
     button:disabled {
-      opacity: .6;
+      opacity: .62;
       cursor: wait;
     }
 
-    .notice {
-      margin-top: 16px;
-      padding: 12px;
-      background: #f4f6f7;
-      border-radius: 8px;
-      color: #56636d;
-      font-size: 13px;
-      line-height: 1.4;
+    .btn-search {
+      display: inline-flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 21px;
+      background: var(--amber);
+      color: #fff;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px #a9661f20;
     }
 
-    #resultado {
-      margin-top: 16px;
+    .btn-search:hover:not(:disabled) { background: var(--amber-dark); }
+
+    .btn-search svg,
+    .btn-danger svg,
+    .status-icon svg {
+      width: 19px;
+      height: 19px;
+      flex: 0 0 auto;
     }
+
+    .notice {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      margin-top: 20px;
+      padding: 14px 16px;
+      border: 1px solid #e7ebf0;
+      border-radius: 11px;
+      background: #f7f8fa;
+      color: #627184;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .notice-mark {
+      display: grid;
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      background: #e4eaf0;
+      color: #526a83;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    #resultado { margin-top: 22px; }
 
     .estado {
-      padding: 12px;
-      border-radius: 8px;
-      background: #eef3f6;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin: 0 0 14px;
+      padding: 15px 17px;
+      border: 1px solid #d8e3ee;
+      border-radius: 11px;
+      background: #f1f5f9;
+      color: #28415d;
+      font-size: 15px;
+      font-weight: 650;
       line-height: 1.45;
     }
 
-    .registro {
-      margin-top: 12px;
-      padding: 14px;
-      border: 1px solid #d8dee3;
-      border-radius: 10px;
-      background: #fff;
+    .estado::before {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      background: #dce8f2;
+      color: #315b7d;
+      content: "i";
+      font-size: 14px;
+      font-weight: 800;
     }
 
-    .registro p {
-      margin: 5px 0;
-      overflow-wrap: anywhere;
+    .estado.success {
+      border-color: #b9e5ca;
+      background: #edf8f1;
+      color: #17643e;
+    }
+
+    .estado.success::before {
+      background: #218653;
+      color: white;
+      content: "✓";
+    }
+
+    .estado.error {
+      border-color: #efc7c9;
+      background: #fff2f2;
+      color: #9b292d;
+    }
+
+    .estado.error::before {
+      background: #bd3438;
+      color: white;
+      content: "!";
+    }
+
+    .resultados {
+      display: grid;
+      gap: 13px;
+    }
+
+    .registro {
+      padding: 20px;
+      border: 1px solid #d8e0e9;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 3px 10px #18324b08;
+    }
+
+    .registro.seleccionable { cursor: pointer; }
+
+    .registro.seleccionable:has(input:checked) {
+      border-color: #819bb5;
+      box-shadow: 0 0 0 3px #416b9012;
+    }
+
+    .registro-cabecera {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e4e9ef;
+    }
+
+    .registro-cabecera h2 {
+      margin: 0;
+      color: #142f50;
+      font-size: 24px;
+      letter-spacing: -.025em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e8f5ed;
+      color: #187246;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .055em;
     }
 
     .opcion {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 14px;
+      color: #475a70;
+      font-size: 14px;
+      font-weight: 650;
     }
 
     .opcion input {
-      width: auto;
-      margin-top: 4px;
+      width: 17px;
+      height: 17px;
+      accent-color: #315b7d;
     }
 
-    .error {
-      color: #a32222;
+    .detalle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 25px;
+      padding-top: 15px;
     }
+
+    .dato {
+      display: grid;
+      grid-template-columns: minmax(88px, .42fr) minmax(0, 1fr);
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f2f5;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .dato:nth-last-child(-n+2) { border-bottom: 0; }
+    .dato-etiqueta { color: #68798d; font-size: 13px; }
+    .dato-valor { color: #1d3552; font-size: 14px; font-weight: 650; }
+
+    .aviso-anulacion {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px solid #f0d9ae;
+      border-radius: 11px;
+      background: #fff8eb;
+      color: #8b5a18;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .aviso-anulacion::before {
+      content: "!";
+      display: grid;
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 2px solid #c9832e;
+      border-radius: 50%;
+      font-weight: 800;
+    }
+
+    .acciones-resultado {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .btn-danger {
+      display: inline-flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 4px 10px #9f252a1a;
+    }
+
+    .btn-danger:hover:not(:disabled) { background: var(--red-dark); }
+
+    .btn-text {
+      min-height: 44px;
+      padding: 0 8px;
+      background: transparent;
+      color: #315b7d;
+      font-size: 14px;
+    }
+
+    .btn-text:hover:not(:disabled) { background: #f0f4f8; }
 
     .oculto {
       position: absolute;
@@ -134,49 +443,102 @@
       height: 1px;
       overflow: hidden;
     }
+
+    @media (max-width: 760px) {
+      body { padding: 18px 12px; }
+      .panel { padding: 24px 20px; border-radius: 17px; }
+      .intro { font-size: 15px; }
+      .search-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .btn-search { grid-column: 1 / -1; width: 100%; }
+      .detalle-grid { grid-template-columns: 1fr; }
+      .dato:nth-last-child(-n+2) { border-bottom: 1px solid #f0f2f5; }
+      .dato:last-child { border-bottom: 0; }
+    }
+
+    @media (max-width: 500px) {
+      .panel { padding: 21px 16px; }
+      h1 { font-size: 29px; }
+      .steps { gap: 8px; font-size: 12px; }
+      .step { gap: 7px; }
+      .step-number { width: 30px; height: 30px; }
+      .step-line { min-width: 14px; margin: 0 3px; }
+      .search-grid { grid-template-columns: 1fr; }
+      .btn-search { grid-column: auto; }
+      .registro { padding: 16px; }
+      .registro-cabecera h2 { font-size: 21px; }
+      .acciones-resultado { align-items: stretch; }
+      .btn-danger { width: 100%; }
+      .btn-text { width: 100%; }
+    }
   </style>
 </head>
 
 <body>
 <main>
-  <section class="panel">
-    <h1>Solicitud de anulación</h1>
+  <section class="panel" aria-labelledby="titulo">
+    <p class="eyebrow">Gestión de remitos · Planta FAS</p>
+    <h1 id="titulo">Solicitud de anulación para descarga en Planta FAS</h1>
     <p class="intro">
-      Ingresá la matrícula y la cédula para buscar el remito vigente.
-      Antes de anularlo podrás revisar los datos y confirmar.
+      Buscá el remito vigente, revisá sus datos y confirmá la solicitud.
     </p>
 
-    <form id="formulario">
-      <label for="matricula">Matrícula del camión o acoplado</label>
-      <input
-        id="matricula"
-        name="matricula"
-        autocomplete="off"
-        maxlength="20"
-        required
-      >
-
-      <label for="ci">Cédula del chofer</label>
-      <input
-        id="ci"
-        name="ci"
-        inputmode="numeric"
-        autocomplete="off"
-        maxlength="20"
-        required
-      >
-
-      <div class="oculto" aria-hidden="true">
-        <label for="website">Dejar vacío</label>
-        <input id="website" name="website" tabindex="-1">
+    <div class="steps" aria-label="Pasos de la solicitud">
+      <div class="step active">
+        <span class="step-number">1</span>
+        <span>Buscar remito</span>
       </div>
+      <span class="step-line" aria-hidden="true"></span>
+      <div class="step">
+        <span class="step-number">2</span>
+        <span>Revisar y confirmar</span>
+      </div>
+    </div>
 
-      <button id="buscar" type="submit">Buscar remito</button>
+    <form id="formulario">
+      <div class="search-grid">
+        <div class="field">
+          <label for="matricula">Matrícula del camión o acoplado</label>
+          <input
+            id="matricula"
+            name="matricula"
+            autocomplete="off"
+            maxlength="20"
+            placeholder="Ej.: ATP4803"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="ci">Cédula del chofer</label>
+          <input
+            id="ci"
+            name="ci"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="20"
+            placeholder="Ingresá la cédula"
+            required
+          >
+        </div>
+
+        <div class="oculto" aria-hidden="true">
+          <label for="website">Dejar vacío</label>
+          <input id="website" name="website" tabindex="-1">
+        </div>
+
+        <button class="btn-search" id="buscar" type="submit">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.7" stroke="currentColor" stroke-width="2.2" />
+            <path d="m16 16 4.4 4.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+          <span>Buscar remito</span>
+        </button>
+      </div>
     </form>
 
     <div class="notice">
-      La matrícula y la cédula se usan para validar la solicitud.
-      La anulación se realiza únicamente después de tu confirmación.
+      <span class="notice-mark" aria-hidden="true">i</span>
+      <span>La matrícula y la cédula se usan para validar la solicitud. La anulación se realiza únicamente después de tu confirmación.</span>
     </div>
 
     <div id="resultado" aria-live="polite"></div>
@@ -191,43 +553,51 @@
   let solicitudActual = null;
   let temporizador = null;
 
-  function mostrarEstado(texto, error = false) {
+  function mostrarEstado(texto, error = false, tipo = "info") {
     resultado.replaceChildren();
 
     const caja = document.createElement("div");
-    caja.className = error ? "estado error" : "estado";
+    caja.className = "estado" + (error ? " error" : tipo === "success" ? " success" : "");
+    caja.setAttribute("role", error ? "alert" : "status");
     caja.textContent = texto;
 
     resultado.appendChild(caja);
   }
 
   function agregarDato(contenedor, etiqueta, valor) {
-    const parrafo = document.createElement("p");
-    const fuerte = document.createElement("strong");
+    const fila = document.createElement("div");
+    fila.className = "dato";
 
-    fuerte.textContent = etiqueta + ": ";
-    parrafo.appendChild(fuerte);
-    parrafo.appendChild(document.createTextNode(valor || "—"));
-    contenedor.appendChild(parrafo);
+    const titulo = document.createElement("span");
+    titulo.className = "dato-etiqueta";
+    titulo.textContent = etiqueta;
+
+    const contenido = document.createElement("span");
+    contenido.className = "dato-valor";
+    contenido.textContent = valor || "—";
+
+    fila.append(titulo, contenido);
+    contenedor.appendChild(fila);
   }
 
   function mostrarCoincidencias(datos) {
     resultado.replaceChildren();
 
     const estado = document.createElement("div");
-    estado.className = "estado";
-    estado.textContent =
-      datos.candidates.length === 1
-        ? "Se encontró el remito vigente. Revisá los datos antes de confirmar."
-        : "Se encontraron varios registros. Elegí cuál querés anular.";
-
+    estado.className = "estado success";
+    estado.setAttribute("role", "status");
+    estado.textContent = datos.candidates.length === 1
+      ? "Remito vigente encontrado. Revisá los datos antes de confirmar."
+      : "Se encontraron varios registros. Elegí cuál querés anular.";
     resultado.appendChild(estado);
 
     const grupo = document.createElement("div");
+    grupo.className = "resultados";
 
     datos.candidates.forEach((registro, indice) => {
-      const tarjeta = document.createElement("div");
-      tarjeta.className = "registro";
+      const tarjeta = document.createElement("article");
+      tarjeta.className = "registro" + (datos.candidates.length > 1 ? " seleccionable" : "");
+      tarjeta.dataset.id = String(registro.id || "");
 
       if (datos.candidates.length > 1) {
         const opcion = document.createElement("label");
@@ -236,36 +606,71 @@
         const radio = document.createElement("input");
         radio.type = "radio";
         radio.name = "registroElegido";
-        radio.value = registro.id;
+        radio.value = String(registro.id || "");
         radio.required = true;
         radio.checked = indice === 0;
 
         const texto = document.createElement("span");
-        texto.textContent = "Elegir este registro";
+        texto.textContent = "Seleccionar este remito";
 
         opcion.append(radio, texto);
         tarjeta.appendChild(opcion);
       }
 
-      agregarDato(tarjeta, "ID", registro.id);
-      agregarDato(tarjeta, "Remito", registro.remito);
-      agregarDato(tarjeta, "Camión", registro.camion);
-      agregarDato(tarjeta, "Acoplado", registro.acoplado);
-      agregarDato(tarjeta, "Horario", registro.horario);
-      agregarDato(tarjeta, "Origen", registro.origen);
-      agregarDato(tarjeta, "Producto", registro.producto);
+      const cabecera = document.createElement("div");
+      cabecera.className = "registro-cabecera";
+
+      const titulo = document.createElement("h2");
+      titulo.textContent = "Remito " + (registro.remito || "sin número");
+
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "VIGENTE";
+
+      cabecera.append(titulo, badge);
+      tarjeta.appendChild(cabecera);
+
+      const detalle = document.createElement("div");
+      detalle.className = "detalle-grid";
+      agregarDato(detalle, "Camión", registro.camion);
+      agregarDato(detalle, "Acoplado", registro.acoplado);
+      agregarDato(detalle, "Horario", registro.horario);
+      agregarDato(detalle, "Origen", registro.origen);
+      agregarDato(detalle, "Producto", registro.producto);
+      tarjeta.appendChild(detalle);
 
       grupo.appendChild(tarjeta);
     });
 
     resultado.appendChild(grupo);
 
+    const aviso = document.createElement("div");
+    aviso.className = "aviso-anulacion";
+    aviso.textContent = "La anulación se realizará únicamente después de confirmar.";
+    resultado.appendChild(aviso);
+
+    const acciones = document.createElement("div");
+    acciones.className = "acciones-resultado";
+
     const confirmar = document.createElement("button");
     confirmar.type = "button";
-    confirmar.textContent = "Confirmar solicitud de anulación";
+    confirmar.className = "btn-danger";
+    confirmar.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-.8 13H6.8L6 7m4 3v6m4-6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Confirmar solicitud de anulación</span>';
     confirmar.addEventListener("click", confirmarAnulacion);
 
-    resultado.appendChild(confirmar);
+    const volver = document.createElement("button");
+    volver.type = "button";
+    volver.className = "btn-text";
+    volver.textContent = "Volver a buscar";
+    volver.addEventListener("click", () => {
+      detenerConsulta();
+      solicitudActual = null;
+      resultado.replaceChildren();
+      document.getElementById("matricula").focus();
+    });
+
+    acciones.append(confirmar, volver);
+    resultado.appendChild(acciones);
   }
 
   async function consultarEstado() {
@@ -313,7 +718,9 @@
 
       if (datos.status === "anulado") {
         mostrarEstado(
-          "El remito fue anulado correctamente. " + datos.message
+          "El remito fue anulado correctamente. " + datos.message,
+          false,
+          "success"
         );
         detenerConsulta();
         return;
@@ -370,18 +777,15 @@
   }
 
   async function confirmarAnulacion() {
-    const seleccionado =
-      document.querySelector('input[name="registroElegido"]:checked');
-
-    const unicoId =
-      document.querySelector(".registro p strong")?.nextSibling?.textContent;
-
+    const seleccionado = document.querySelector(
+      'input[name="registroElegido"]:checked'
+    );
+    const tarjetaSeleccionada = seleccionado
+      ? seleccionado.closest(".registro")
+      : document.querySelector(".registro");
     const selectedId = seleccionado
       ? seleccionado.value
-      : (solicitudActual && document.querySelector(".registro")
-          ? document.querySelector(".registro").querySelector("p")
-              ?.textContent.replace("ID:", "").trim()
-          : unicoId);
+      : tarjetaSeleccionada?.dataset.id;
 
     if (!selectedId) {
       mostrarEstado("Elegí un registro para continuar.", true);
@@ -427,6 +831,7 @@
   formulario.addEventListener("submit", async evento => {
     evento.preventDefault();
     detenerConsulta();
+    solicitudActual = null;
 
     botonBuscar.disabled = true;
     mostrarEstado("Enviando la búsqueda...");
