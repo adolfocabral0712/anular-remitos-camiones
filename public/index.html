@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f3f5f8">
-  <title>Gestión turnos en Planta FAS</title>
+  <title>Solicitud de anulación para descarga en Planta FAS</title>
 
   <style>
     :root {
@@ -609,8 +609,8 @@
         min-height: 0;
         flex: 1;
         flex-direction: column;
-        justify-content: center;
-        padding: 6px 0;
+        justify-content: flex-start;
+        padding: clamp(16px, 3vh, 26px) 0 6px;
       }
       body.landing-lock .landing-header {
         flex: 0 0 auto;
@@ -621,19 +621,6 @@
         font-size: clamp(26px, 4.2vh, 31px);
         line-height: 1.06;
       }
-      body.landing-lock .landing-title::before,
-      body.landing-lock .landing-title::after {
-        display: block;
-        width: 38px;
-        height: 2px;
-        margin-right: auto;
-        margin-left: auto;
-        border-radius: 2px;
-        background: #bdc9d7;
-        content: "";
-      }
-      body.landing-lock .landing-title::before { margin-bottom: 6px; }
-      body.landing-lock .landing-title::after { margin-top: 6px; }
       body.landing-lock .landing-subtitle {
         font-size: clamp(14px, 2.2vh, 16px);
         line-height: 1.2;
