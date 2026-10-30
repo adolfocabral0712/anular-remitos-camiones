@@ -449,22 +449,12 @@
 
     .landing-view { padding: 24px 0 40px; }
     .landing-header { margin: 0 auto 44px; text-align: center; }
-    .brand-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 21px;
-      border-radius: 15px;
-      background: #f0f3f7;
-      color: #344256;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: .16em;
-    }
     .landing-title {
-      margin: 25px 0 7px;
+      width: 100%;
+      max-width: none;
+      margin: 0 auto 7px;
       color: #142235;
+      text-align: center;
       font-size: clamp(38px, 5.2vw, 62px);
       font-weight: 780;
       letter-spacing: -.045em;
@@ -474,7 +464,9 @@
       margin: 0;
       color: #627084;
       font-size: clamp(19px, 2.4vw, 25px);
+      font-weight: 700;
       line-height: 1.4;
+      text-align: center;
     }
     .choice-grid {
       display: grid;
@@ -527,6 +519,7 @@
       margin: 13px 0 26px;
       color: #56657a;
       font-size: 18px;
+      font-weight: 700;
       line-height: 1.45;
     }
     .choice-action {
@@ -576,7 +569,6 @@
       .choice-grid { grid-template-columns: 1fr; }
       .choice-card { min-height: 350px; }
       .landing-title { font-size: 39px; }
-      .brand-pill { min-height: 40px; font-size: 13px; }
     }
 
     @media (max-width: 760px) {
@@ -612,7 +604,6 @@
 <main>
   <section class="landing-view" id="inicio" aria-labelledby="titulo-inicio">
     <header class="landing-header">
-      <span class="brand-pill">PLANTA FAS</span>
       <h1 class="landing-title" id="titulo-inicio">Gestión de turnos</h1>
       <p class="landing-subtitle">Gestiona tu arribo</p>
     </header>
@@ -636,7 +627,7 @@
           </svg>
         </span>
         <h2>AGENDAR TURNO</h2>
-        <p>Gestiona tu arribo</p>
+        <p>Gestiona tu llegada</p>
         <span class="choice-action">Agendar turno</span>
       </a>
 
