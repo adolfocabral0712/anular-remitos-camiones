@@ -565,12 +565,6 @@
       .choice-icon svg { width: 94px; height: 94px; }
       .choice-card p { font-size: 16px; }
     }
-    @media (max-width: 560px) {
-      .choice-grid { grid-template-columns: 1fr; }
-      .choice-card { min-height: 350px; }
-      .landing-title { font-size: 39px; }
-    }
-
     @media (max-width: 760px) {
       body { padding: 18px 12px; }
       .panel { padding: 24px 20px; border-radius: 17px; }
@@ -597,6 +591,43 @@
       .btn-danger { width: 100%; }
       .btn-text { width: 100%; }
     }
+    @media (max-width: 560px) {
+      body { padding: 8px 10px; }
+      .landing-view { padding: 8px 0 10px; }
+      .landing-header { margin-bottom: 12px; }
+      .landing-title {
+        margin-bottom: 4px;
+        font-size: 31px;
+        line-height: 1.08;
+      }
+      .landing-subtitle { font-size: 16px; line-height: 1.25; }
+      .choice-grid { grid-template-columns: 1fr; gap: 10px; }
+      .choice-card {
+        min-height: 0;
+        padding: 14px 16px;
+        border-radius: 18px;
+      }
+      .choice-icon {
+        width: 78px;
+        height: 78px;
+        margin-bottom: 8px;
+      }
+      .choice-icon svg { width: 66px; height: 66px; }
+      .choice-card h2 { font-size: 21px; line-height: 1.15; }
+      .choice-card p {
+        min-height: 0;
+        margin: 7px 0 10px;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+      .choice-action {
+        min-height: 44px;
+        padding: 0 22px;
+        border-radius: 11px;
+        font-size: 16px;
+      }
+    }
+
   </style>
 </head>
 
