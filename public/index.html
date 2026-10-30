@@ -592,46 +592,82 @@
       .btn-text { width: 100%; }
     }
     @media (max-width: 560px) {
-      body { padding: 8px 10px; }
-      .landing-view { padding: 8px 0 10px; }
-      .landing-header { margin-bottom: 12px; }
-      .landing-title {
-        margin-bottom: 4px;
-        font-size: 31px;
-        line-height: 1.08;
-      }
-      .landing-subtitle { font-size: 16px; line-height: 1.25; }
-      .choice-grid { grid-template-columns: 1fr; gap: 10px; }
-      .choice-card {
+      body.landing-lock {
+        height: 100vh;
+        height: 100svh;
         min-height: 0;
-        padding: 14px 16px;
-        border-radius: 18px;
+        overflow: hidden;
+        padding: 4px 10px;
       }
-      .choice-icon {
-        width: 78px;
-        height: 78px;
+      body.landing-lock main {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+      }
+      body.landing-lock .landing-view {
+        display: flex;
+        min-height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 4px 0;
+      }
+      body.landing-lock .landing-header {
+        flex: 0 0 auto;
         margin-bottom: 8px;
       }
-      .choice-icon svg { width: 66px; height: 66px; }
-      .choice-card h2 { font-size: 21px; line-height: 1.15; }
-      .choice-card p {
-        min-height: 0;
-        margin: 7px 0 10px;
-        font-size: 15px;
-        line-height: 1.25;
+      body.landing-lock .landing-title {
+        margin-bottom: 3px;
+        font-size: clamp(26px, 4.2vh, 31px);
+        line-height: 1.06;
       }
-      .choice-action {
-        min-height: 44px;
-        padding: 0 22px;
-        border-radius: 11px;
-        font-size: 16px;
+      body.landing-lock .landing-subtitle {
+        font-size: clamp(14px, 2.2vh, 16px);
+        line-height: 1.2;
+      }
+      body.landing-lock .choice-grid {
+        display: grid;
+        min-height: 0;
+        flex: 1;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      body.landing-lock .choice-card {
+        min-height: 0;
+        padding: clamp(5px, 1.4vh, 12px) 14px;
+        border-radius: 17px;
+      }
+      body.landing-lock .choice-icon {
+        width: clamp(48px, 8.5vh, 72px);
+        height: clamp(48px, 8.5vh, 72px);
+        margin-bottom: clamp(2px, .8vh, 7px);
+      }
+      body.landing-lock .choice-icon svg {
+        width: 84%;
+        height: 84%;
+      }
+      body.landing-lock .choice-card h2 {
+        font-size: clamp(17px, 2.7vh, 21px);
+        line-height: 1.12;
+      }
+      body.landing-lock .choice-card p {
+        min-height: 0;
+        margin: clamp(3px, .7vh, 7px) 0 clamp(4px, .9vh, 9px);
+        font-size: clamp(13px, 2vh, 15px);
+        line-height: 1.2;
+      }
+      body.landing-lock .choice-action {
+        min-height: clamp(34px, 5.4vh, 44px);
+        padding: 0 20px;
+        border-radius: 10px;
+        font-size: clamp(14px, 2.2vh, 16px);
       }
     }
 
   </style>
 </head>
 
-<body>
+<body class="landing-lock">
 <main>
   <section class="landing-view" id="inicio" aria-labelledby="titulo-inicio">
     <header class="landing-header">
@@ -758,6 +794,7 @@
   const botonVolverInicio = document.getElementById("volverInicio");
 
   botonAbrirAnulacion.addEventListener("click", () => {
+    document.body.classList.remove("landing-lock");
     inicio.hidden = true;
     panelAnulacion.hidden = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -767,6 +804,7 @@
   botonVolverInicio.addEventListener("click", () => {
     panelAnulacion.hidden = true;
     inicio.hidden = false;
+    document.body.classList.add("landing-lock");
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
