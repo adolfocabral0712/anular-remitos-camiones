@@ -565,6 +565,12 @@
       .choice-icon svg { width: 94px; height: 94px; }
       .choice-card p { font-size: 16px; }
     }
+    @media (max-width: 560px) {
+      .choice-grid { grid-template-columns: 1fr; }
+      .choice-card { min-height: 350px; }
+      .landing-title { font-size: 39px; }
+    }
+
     @media (max-width: 760px) {
       body { padding: 18px 12px; }
       .panel { padding: 24px 20px; border-radius: 17px; }
@@ -591,99 +597,10 @@
       .btn-danger { width: 100%; }
       .btn-text { width: 100%; }
     }
-    @media (max-width: 560px) {
-      body.landing-lock {
-        height: 100vh;
-        height: 100svh;
-        min-height: 0;
-        overflow: hidden;
-        padding: 4px 10px;
-      }
-      body.landing-lock main {
-        display: flex;
-        height: 100%;
-        flex-direction: column;
-      }
-      body.landing-lock .landing-view {
-        display: flex;
-        min-height: 0;
-        flex: 1;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding: clamp(16px, 3vh, 26px) 0 6px;
-      }
-      body.landing-lock .landing-header {
-        flex: 0 0 auto;
-        margin-bottom: clamp(12px, 2vh, 18px);
-      }
-      body.landing-lock .landing-title {
-        margin-bottom: 5px;
-        font-size: clamp(26px, 4.2vh, 31px);
-        line-height: 1.06;
-      }
-      body.landing-lock .landing-subtitle {
-        font-size: clamp(14px, 2.2vh, 16px);
-        line-height: 1.2;
-      }
-      body.landing-lock .choice-grid {
-        display: grid;
-        min-height: 0;
-        flex: 0 0 auto;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-        align-content: center;
-        gap: clamp(10px, 1.8vh, 16px);
-      }
-      body.landing-lock .choice-card {
-        min-height: 0;
-        padding: clamp(10px, 1.5vh, 14px) 14px;
-        border-radius: 17px;
-      }
-      body.landing-lock .choice-icon {
-        width: clamp(54px, 7.5vh, 64px);
-        height: clamp(54px, 7.5vh, 64px);
-        margin-bottom: 5px;
-      }
-      body.landing-lock .choice-icon svg {
-        width: 84%;
-        height: 84%;
-      }
-      body.landing-lock .choice-card h2 {
-        font-size: clamp(17px, 2.6vh, 20px);
-        line-height: 1.12;
-      }
-      body.landing-lock .choice-card h2::before,
-      body.landing-lock .choice-card h2::after {
-        display: block;
-        width: 34px;
-        height: 2px;
-        margin-right: auto;
-        margin-left: auto;
-        border-radius: 2px;
-        background: currentColor;
-        opacity: .42;
-        content: "";
-      }
-      body.landing-lock .choice-card h2::before { margin-bottom: 5px; }
-      body.landing-lock .choice-card h2::after { margin-top: 5px; }
-      body.landing-lock .choice-card p {
-        min-height: 0;
-        margin: 5px 0 8px;
-        font-size: clamp(13px, 2vh, 15px);
-        line-height: 1.2;
-      }
-      body.landing-lock .choice-action {
-        min-height: clamp(38px, 5vh, 42px);
-        padding: 0 20px;
-        border-radius: 10px;
-        font-size: clamp(14px, 2.2vh, 16px);
-      }
-    }
-
   </style>
 </head>
 
-<body class="landing-lock">
+<body>
 <main>
   <section class="landing-view" id="inicio" aria-labelledby="titulo-inicio">
     <header class="landing-header">
@@ -810,7 +727,6 @@
   const botonVolverInicio = document.getElementById("volverInicio");
 
   botonAbrirAnulacion.addEventListener("click", () => {
-    document.body.classList.remove("landing-lock");
     inicio.hidden = true;
     panelAnulacion.hidden = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -820,7 +736,6 @@
   botonVolverInicio.addEventListener("click", () => {
     panelAnulacion.hidden = true;
     inicio.hidden = false;
-    document.body.classList.add("landing-lock");
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
