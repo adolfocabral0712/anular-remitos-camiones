@@ -37,7 +37,7 @@
     }
 
     main {
-      width: min(100%, 1040px);
+      width: min(100%, 1200px);
       margin: 0 auto;
     }
 
@@ -444,6 +444,141 @@
       overflow: hidden;
     }
 
+
+    [hidden] { display: none !important; }
+
+    .landing-view { padding: 24px 0 40px; }
+    .landing-header { margin: 0 auto 44px; text-align: center; }
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 21px;
+      border-radius: 15px;
+      background: #f0f3f7;
+      color: #344256;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .16em;
+    }
+    .landing-title {
+      margin: 25px 0 7px;
+      color: #142235;
+      font-size: clamp(38px, 5.2vw, 62px);
+      font-weight: 780;
+      letter-spacing: -.045em;
+      line-height: 1.05;
+    }
+    .landing-subtitle {
+      margin: 0;
+      color: #627084;
+      font-size: clamp(19px, 2.4vw, 25px);
+      line-height: 1.4;
+    }
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+    .choice-card {
+      display: flex;
+      min-height: 420px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 34px 30px;
+      border: 1px solid #e3e9f0;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 14px 35px #18324b0c;
+      color: inherit;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .choice-card:hover {
+      transform: translateY(-3px);
+      border-color: #cbd8e6;
+      box-shadow: 0 20px 42px #18324b16;
+    }
+    .choice-card:focus-visible {
+      outline: 3px solid #4d83b566;
+      outline-offset: 4px;
+    }
+    .choice-icon {
+      display: grid;
+      width: 142px;
+      height: 142px;
+      place-items: center;
+      margin: 0 0 25px;
+      border-radius: 50%;
+    }
+    .choice-icon svg { width: 112px; height: 112px; }
+    .choice-card h2 {
+      margin: 0;
+      font-size: clamp(25px, 3vw, 32px);
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+    .choice-card p {
+      min-height: 28px;
+      margin: 13px 0 26px;
+      color: #56657a;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+    .choice-action {
+      display: inline-flex;
+      min-height: 62px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 28px;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 19px;
+      font-weight: 750;
+      box-shadow: 0 7px 16px #18324b18;
+    }
+    .choice-card.agenda .choice-icon { background: #eaf4ff; }
+    .choice-card.agenda h2 { color: #1761ad; }
+    .choice-card.agenda .choice-action { background: #1678ed; }
+    .choice-card.agenda:hover .choice-action { background: #0867d4; }
+    .choice-card.cancel .choice-icon { background: #fff0e8; }
+    .choice-card.cancel h2 { color: #bb4d12; }
+    .choice-card.cancel .choice-action { background: #ed6417; }
+    .choice-card.cancel:hover .choice-action { background: #d9530c; }
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      margin: 0 0 20px;
+      padding: 0 13px;
+      border: 1px solid #d9e2eb;
+      background: #fff;
+      color: #315b7d;
+      font-size: 14px;
+    }
+    .back-home:hover { background: #f4f7fa; }
+
+    @media (max-width: 760px) {
+      .landing-view { padding: 16px 0 24px; }
+      .landing-header { margin-bottom: 30px; }
+      .choice-grid { gap: 18px; }
+      .choice-card { min-height: 370px; padding: 26px 20px; }
+      .choice-icon { width: 118px; height: 118px; }
+      .choice-icon svg { width: 94px; height: 94px; }
+      .choice-card p { font-size: 16px; }
+    }
+    @media (max-width: 560px) {
+      .choice-grid { grid-template-columns: 1fr; }
+      .choice-card { min-height: 350px; }
+      .landing-title { font-size: 39px; }
+      .brand-pill { min-height: 40px; font-size: 13px; }
+    }
+
     @media (max-width: 760px) {
       body { padding: 18px 12px; }
       .panel { padding: 24px 20px; border-radius: 17px; }
@@ -475,9 +610,58 @@
 
 <body>
 <main>
-  <section class="panel" aria-labelledby="titulo">
-    <p class="eyebrow">Gestión de turnos · Planta FAS</p>
-    <h1 id="titulo">Solicitud de anulación de turno para descarga en Planta FAS</h1>
+  <section class="landing-view" id="inicio" aria-labelledby="titulo-inicio">
+    <header class="landing-header">
+      <span class="brand-pill">PLANTA FAS</span>
+      <h1 class="landing-title" id="titulo-inicio">Gestión de turnos</h1>
+      <p class="landing-subtitle">Gestiona tu arribo</p>
+    </header>
+
+    <div class="choice-grid" aria-label="Opciones para gestionar el turno">
+      <a class="choice-card agenda"
+         href="https://playa.logma.uy/truck/login/?next=/truck/"
+         target="_blank" rel="noopener noreferrer">
+        <span class="choice-icon" aria-hidden="true">
+          <svg viewBox="0 0 120 120" fill="none">
+            <rect x="16" y="14" width="72" height="67" rx="10" stroke="#1761ad" stroke-width="6"/>
+            <path d="M16 34h72M34 8v15m36-15v15" stroke="#1761ad" stroke-width="6" stroke-linecap="round"/>
+            <rect x="28" y="45" width="12" height="12" rx="3" fill="#b8dcff"/>
+            <rect x="48" y="45" width="12" height="12" rx="3" fill="#b8dcff"/>
+            <rect x="68" y="45" width="12" height="12" rx="3" fill="#1678ed"/>
+            <rect x="28" y="63" width="12" height="10" rx="3" fill="#b8dcff"/>
+            <rect x="48" y="63" width="12" height="10" rx="3" fill="#b8dcff"/>
+            <path d="M43 91h42l13 8v12H34V99l9-8Z" fill="#fff" stroke="#173453" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M85 94h11l8 9v8H85V94Z" fill="#d9ebfb" stroke="#173453" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="51" cy="111" r="6" fill="#173453"/><circle cx="91" cy="111" r="6" fill="#173453"/>
+          </svg>
+        </span>
+        <h2>AGENDAR TURNO</h2>
+        <p>Gestiona tu arribo</p>
+        <span class="choice-action">Agendar turno</span>
+      </a>
+
+      <button class="choice-card cancel" id="abrirAnulacion" type="button">
+        <span class="choice-icon" aria-hidden="true">
+          <svg viewBox="0 0 120 120" fill="none">
+            <rect x="16" y="14" width="72" height="67" rx="10" stroke="#c45013" stroke-width="6"/>
+            <path d="M16 34h72M34 8v15m36-15v15" stroke="#c45013" stroke-width="6" stroke-linecap="round"/>
+            <path d="m43 47 24 24m0-24L43 71" stroke="#ed6417" stroke-width="7" stroke-linecap="round"/>
+            <path d="M43 91h42l13 8v12H34V99l9-8Z" fill="#fff" stroke="#753714" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M85 94h11l8 9v8H85V94Z" fill="#ffe5d5" stroke="#753714" stroke-width="5" stroke-linejoin="round"/>
+            <circle cx="51" cy="111" r="6" fill="#753714"/><circle cx="91" cy="111" r="6" fill="#753714"/>
+          </svg>
+        </span>
+        <h2>ANULAR TURNO</h2>
+        <p>Gestiona tu cambio de turno</p>
+        <span class="choice-action">Gestión anulación</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="panel" id="anulacion" aria-labelledby="titulo" hidden>
+    <button class="back-home" id="volverInicio" type="button">← Volver al inicio</button>
+    <p class="eyebrow">Planta FAS · Anular turno</p>
+    <h1 id="titulo">Gestión anulación</h1>
     <p class="intro">
       Buscá el turno vigente, revisá sus datos y confirmá la solicitud.
     </p>
@@ -546,6 +730,24 @@
 </main>
 
 <script>
+  const inicio = document.getElementById("inicio");
+  const panelAnulacion = document.getElementById("anulacion");
+  const botonAbrirAnulacion = document.getElementById("abrirAnulacion");
+  const botonVolverInicio = document.getElementById("volverInicio");
+
+  botonAbrirAnulacion.addEventListener("click", () => {
+    inicio.hidden = true;
+    panelAnulacion.hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById("matricula").focus({ preventScroll: true });
+  });
+
+  botonVolverInicio.addEventListener("click", () => {
+    panelAnulacion.hidden = true;
+    inicio.hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
   const formulario = document.getElementById("formulario");
   const botonBuscar = document.getElementById("buscar");
   const resultado = document.getElementById("resultado");
